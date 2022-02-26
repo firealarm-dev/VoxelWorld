@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
 {
-
     private MovementSystem _movementSystem;
 
-    void Awake()
+    private void Awake()
     {
         _movementSystem = new MovementSystem(gameObject, 3, 5, 100);
     }
@@ -27,7 +26,7 @@ public class PlayerBehavior : MonoBehaviour
             _movementSystem.Jump();
         }
     }
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");

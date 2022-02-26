@@ -6,15 +6,17 @@ public class MovementSystem
     private readonly float _sprintSpeed;
     private readonly float _jumpForce;
     private bool _inAir = true;
+    private readonly Rigidbody _rigidbody;
     private readonly GameObject _gameObject;
 
-    private delegate void MoveVar(float h, float v);
+    private delegate void MoveVariably(float horizontalPart, float verticalPart);
 
-    private MoveVar _move;
+    private MoveVariably _move;
 
     public MovementSystem(GameObject gameObject, float speed, float sprintSpeed, float jumpForce)
     {
         _gameObject = gameObject;
+        _rigidbody = gameObject.GetComponent<Rigidbody>();
         _speed = speed;
         _sprintSpeed = sprintSpeed;
         _jumpForce = jumpForce;
@@ -28,31 +30,26 @@ public class MovementSystem
     {
         if (!InAir)
         {
-            _gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * _jumpForce);
+            _rigidbody.AddForce(Vector3.up * _jumpForce);
             OnLeaveGround();
         }
     }
 
-    private void MoveOnGround(float h, float v)
+    private void MoveOnGround(float horizontalPart, float verticalPart)
     {
-        var speed = _speed;
-        if (InSprint)
-        {
-            speed = _sprintSpeed;
-        }
+        var speed = InSprint ? _sprintSpeed : _speed;
 
-        _gameObject.GetComponent<Rigidbody>().velocity =
-            (_gameObject.transform.right * h + _gameObject.transform.forward * v) * speed;
+        _rigidbody.velocity = (_gameObject.transform.right * horizontalPart + _gameObject.transform.forward * verticalPart) * speed;
     }
 
-    private void MoveAtAir(float h, float v)
+    private void MoveAtAir(float horizontalPart, float verticalPart)
     {
-        _gameObject.GetComponent<Rigidbody>().AddForce((_gameObject.transform.right * h + _gameObject.transform.forward * v) * _speed);
+        _rigidbody.AddForce((_gameObject.transform.right * horizontalPart + _gameObject.transform.forward * verticalPart) * _speed);
     }
 
-    public void Move(float h, float v)
+    public void Move(float horizontalPart, float verticalPart)
     {
-        _move?.Invoke(h, v);
+        _move?.Invoke(horizontalPart, verticalPart);
     }
 
     public void OnTouchGround()
