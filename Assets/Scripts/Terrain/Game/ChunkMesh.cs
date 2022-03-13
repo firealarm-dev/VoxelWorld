@@ -4,11 +4,13 @@ namespace Terrain.Game
 {
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(MeshFilter))]
+    [RequireComponent(typeof(MeshCollider))]
     internal class ChunkMesh : MonoBehaviour
     {
         private Material _material;
         private MeshRenderer _meshRenderer;
         private MeshFilter _meshFilter;
+        private MeshCollider _meshCollider;
         
         public static ChunkMesh Attach(GameObject gameObject, Material material)
         {
@@ -21,11 +23,13 @@ namespace Terrain.Game
         {
             _meshFilter = GetComponent<MeshFilter>();
             _meshRenderer = GetComponent<MeshRenderer>();
+            _meshCollider = GetComponent<MeshCollider>();
         }
 
         public void Render(Mesh mesh)
         {
             _meshRenderer.sharedMaterial = _material;
+            _meshCollider.sharedMesh = mesh;
             _meshFilter.mesh = mesh;
         }
     }

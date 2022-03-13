@@ -3,7 +3,7 @@ using Terrain.Abstractions;
 using Terrain.Models;
 using UnityEngine;
 
-namespace Terrain.Game
+namespace Terrain.Services
 {
     internal class VoxelMeshBuilder : IVoxelMeshBuilder
     {
