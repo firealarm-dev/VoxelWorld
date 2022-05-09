@@ -49,6 +49,7 @@ public class MovementSystem
 
     public void Move(float horizontalPart, float verticalPart)
     {
+        
         _move?.Invoke(horizontalPart, verticalPart);
     }
 
