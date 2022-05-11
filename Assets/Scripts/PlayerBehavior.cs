@@ -6,13 +6,14 @@ public class PlayerBehavior : MonoBehaviour
     private MovementSystem _movementSystem;
 
     private CameraSystem _cameraSystem;
-    
+
+    [SerializeField] private Transform cameraTransform;
     
     private void Awake()
     {
         _movementSystem = new MovementSystem(gameObject, 3, 5, 100);
         
-        _cameraSystem = new CameraSystem(transform, _movementSystem);
+        _cameraSystem = new CameraSystem(transform, _movementSystem, cameraTransform);
     }
     
     private void OnTriggerEnter(Collider other)

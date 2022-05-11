@@ -7,14 +7,16 @@ public class CameraSystem
 
     private readonly MovementSystem _movementSystem;
 
-    private Transform CameraTransform => GameObject.FindWithTag("MainCamera").transform;
+    private readonly Transform _cameraTransform;
 
-    public CameraSystem(Transform targetTransform, MovementSystem movementSystem)
+    public CameraSystem(Transform targetTransform, MovementSystem movementSystem, Transform cameraTransform)
     {
         //transform of the player
         _targetTransform = targetTransform;
         
         _movementSystem = movementSystem;
+
+        _cameraTransform = cameraTransform;
     }
 
     public void MoveUnderCamera(float horizontalPart, float verticalPart)
@@ -22,7 +24,7 @@ public class CameraSystem
         var currentDirection = new Vector3(horizontalPart, 0, verticalPart).normalized;
         
         //Direction relative to camera direction
-        var relativeDirection = CameraTransform.TransformDirection(currentDirection);
+        var relativeDirection = _cameraTransform.TransformDirection(currentDirection);
         
         //removing the vertical part
         relativeDirection = new Vector3(relativeDirection.x, 0, relativeDirection.z);
@@ -43,7 +45,8 @@ public class CameraSystem
         if (hPart != 0)
         {
             direction = Math.Abs(hPart);
-        }else if (vPart != 0)
+        }
+        else if (vPart != 0)
         {
             direction = Math.Abs(vPart);
         }
