@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MovementSystem
@@ -9,9 +10,7 @@ public class MovementSystem
     private readonly Rigidbody _rigidbody;
     private readonly GameObject _gameObject;
 
-    private delegate void MoveVariably(float horizontalPart, float verticalPart);
-
-    private MoveVariably _move;
+    private Action<float, float> _move;
 
     public MovementSystem(GameObject gameObject, float speed, float sprintSpeed, float jumpForce)
     {
@@ -22,7 +21,7 @@ public class MovementSystem
         _jumpForce = jumpForce;
     }
 
-    public bool InSprint { get; set; } = false;
+    public bool InSprint { get; set; }
 
     public bool InAir => _inAir;
 

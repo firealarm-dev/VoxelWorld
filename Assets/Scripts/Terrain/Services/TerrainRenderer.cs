@@ -15,7 +15,7 @@ namespace Terrain.Services
         [SerializeField] private NoiseOptions _noiseOptions;
 
         private NoiseGenerator _noiseGenerator;
-        
+
         private static readonly World World = new World(16, 56);
 
         private void Awake()
@@ -50,20 +50,18 @@ namespace Terrain.Services
             var chunk = new Chunk(16, 56, position);
             World[position] = chunk;
 
-            for (var x = 0; x < chunk.Size; x++)
+            for (var i = 0; i < chunk.Size * chunk.Height * chunk.Size; i++)
             {
-                for (var y = 0; y < chunk.Height; y++)
-                {
-                    for (var z = 0; z < chunk.Size; z++)
-                    {
-                        var noise = _noiseGenerator.GetNoise(x + position.x, z + position.y);
-                        var height = noise.Map(0, chunk.Height, 0, 1);
+                var x = i % chunk.Size;
+                var y = i / chunk.Size % chunk.Height;
+                var z = i / chunk.Size / chunk.Height;
 
-                        chunk[x, y, z] = y <= height
-                            ? BlockType.Grass
-                            : BlockType.Air;
-                    }
-                }
+                var noise = _noiseGenerator.GetNoise(x + position.x, z + position.y);
+                var height = noise.Map(0, chunk.Height, 0, 1);
+
+                chunk[x, y, z] = y <= height
+                    ? BlockType.Grass
+                    : BlockType.Air;
             }
         }
 
@@ -73,31 +71,28 @@ namespace Terrain.Services
 
             var meshBuilder = new VoxelMeshBuilder();
             var blockSides = (BlockSide[])Enum.GetValues(typeof(BlockSide));
-
-            for (var x = 0; x < chunk.Size; x++)
+            for (var i = 0; i < chunk.Size * chunk.Height * chunk.Size; i++)
             {
-                for (var y = 0; y < chunk.Height; y++)
+                var x = i % chunk.Size;
+                var y = i / chunk.Size % chunk.Height;
+                var z = i / chunk.Size / chunk.Height;
+
+                var worldPosition = new Vector3Int(x + chunk.Position.x, y, z + chunk.Position.y);
+
+                if (!World.TryGetBlock(worldPosition, out _))
                 {
-                    for (var z = 0; z < chunk.Size; z++)
+                    continue;
+                }
+
+                var localPosition = new Vector3Int(x, y, z);
+
+                foreach (var blockSide in blockSides)
+                {
+                    var neightbourPosition = worldPosition + blockSide.ToVector();
+
+                    if (!World.TryGetBlock(neightbourPosition, out var blockType) && blockType == BlockType.Air)
                     {
-                        var worldPosition = new Vector3Int(x + chunk.Position.x, y, z + chunk.Position.y);
-
-                        if (!World.TryGetBlock(worldPosition, out _))
-                        {
-                            continue;
-                        }
-
-                        var localPosition = new Vector3Int(x, y, z);
-
-                        foreach (var blockSide in blockSides)
-                        {
-                            var neightbourPosition = worldPosition + blockSide.ToVector();
-
-                            if (!World.TryGetBlock(neightbourPosition, out var blockType) && blockType == BlockType.Air)
-                            {
-                                meshBuilder.AppendQuad(blockSide, localPosition);
-                            }
-                        }
+                        meshBuilder.AppendQuad(blockSide, localPosition);
                     }
                 }
             }
