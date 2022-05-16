@@ -261,11 +261,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a180a6dd16844bc4b3f1993fa9cf4267, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sizeInChunks: 10
-  _randomSeed: 1
-  _material: {fileID: 2100000, guid: ef08387564724056396fc04b8c8b3cb2, type: 2}
-  _noiseOptions:
-    <Frequency>k__BackingField: 1.5
+  sizeInChunks: 5
+  randomSeed: 1
+  material: {fileID: 2100000, guid: ef08387564724056396fc04b8c8b3cb2, type: 2}
+  noiseOptions:
+    <Frequency>k__BackingField: 1
     <Amplitude>k__BackingField: 1
     <Persistence>k__BackingField: 0.5
     <Smoothness>k__BackingField: 0.01

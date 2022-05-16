@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Terrain.Models;
 using UnityEngine;
 
-namespace Terrain.Models
+namespace Terrain
 {
-    public class World : IEnumerable<Chunk>
+    internal class WorldTerrain : IEnumerable<Chunk>
     {
         private readonly Dictionary<Vector2Int, Chunk> _chunks = new Dictionary<Vector2Int, Chunk>();
 
-        public World(ushort chunkSize, ushort chunkHeight)
+        public WorldTerrain(ushort chunkSize, ushort chunkHeight)
         {
             ChunkSize = chunkSize;
             ChunkHeight = chunkHeight;

@@ -5,10 +5,10 @@ namespace Terrain.Extensions
 {
     internal static class WorldExtensions
     {
-        public static bool TryGetBlock(this World world, Vector3Int position, out BlockType blockType)
+        public static bool TryGetBlock(this WorldTerrain terrain, Vector3Int position, out BlockType blockType)
         {
             var (x, y, z) = (position.x, position.y, position.z);
-            return world.TryGetBlock(x, y, z, out blockType);
+            return terrain.TryGetBlock(x, y, z, out blockType);
         }
     }
 }

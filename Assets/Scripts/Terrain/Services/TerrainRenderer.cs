@@ -1,4 +1,5 @@
 using System;
+using Terrain;
 using Terrain.Extensions;
 using Terrain.Game;
 using Terrain.Models;
@@ -9,37 +10,37 @@ namespace Terrain.Services
 {
     internal class TerrainRenderer : MonoBehaviour
     {
-        [SerializeField] private byte _sizeInChunks = 5;
-        [SerializeField] private bool _randomSeed = true;
-        [SerializeField] private Material _material;
-        [SerializeField] private NoiseOptions _noiseOptions;
+        [SerializeField] private byte sizeInChunks = 5;
+        [SerializeField] private bool randomSeed = true;
+        [SerializeField] private Material material;
+        [SerializeField] private NoiseOptions noiseOptions;
 
         private NoiseGenerator _noiseGenerator;
 
-        private static readonly World World = new World(16, 56);
+        private static readonly WorldTerrain WorldTerrain = new WorldTerrain(16, 56);
 
         private void Awake()
         {
-            if (_randomSeed)
+            if (randomSeed)
             {
-                _noiseOptions.Seed = Random.Range(-100000, 100000);
+                noiseOptions.Seed = Random.Range(-100000, 100000);
             }
 
-            _noiseGenerator = new NoiseGenerator(_noiseOptions);
+            _noiseGenerator = new NoiseGenerator(noiseOptions);
         }
 
         private void Start()
         {
-            for (var x = 0; x < _sizeInChunks; x++)
+            for (var x = 0; x < sizeInChunks; x++)
             {
-                for (var z = 0; z < _sizeInChunks; z++)
+                for (var z = 0; z < sizeInChunks; z++)
                 {
-                    var position = new Vector2Int(x * World.ChunkSize, z * World.ChunkSize);
+                    var position = new Vector2Int(x * WorldTerrain.ChunkSize, z * WorldTerrain.ChunkSize);
                     CreateChunk(position);
                 }
             }
 
-            foreach (var chunk in World)
+            foreach (var chunk in WorldTerrain)
             {
                 RenderChunk(chunk);
             }
@@ -48,7 +49,7 @@ namespace Terrain.Services
         private void CreateChunk(Vector2Int position)
         {
             var chunk = new Chunk(16, 56, position);
-            World[position] = chunk;
+            WorldTerrain[position] = chunk;
 
             for (var i = 0; i < chunk.Size * chunk.Height * chunk.Size; i++)
             {
@@ -67,7 +68,7 @@ namespace Terrain.Services
 
         private void RenderChunk(Chunk chunk)
         {
-            var chunkObject = new ChunkObject(chunk, transform, _material);
+            var chunkObject = new ChunkObject(chunk, transform, material);
 
             var meshBuilder = new VoxelMeshBuilder();
             var blockSides = (BlockSide[])Enum.GetValues(typeof(BlockSide));
@@ -79,7 +80,7 @@ namespace Terrain.Services
 
                 var worldPosition = new Vector3Int(x + chunk.Position.x, y, z + chunk.Position.y);
 
-                if (!World.TryGetBlock(worldPosition, out _))
+                if (!WorldTerrain.TryGetBlock(worldPosition, out _))
                 {
                     continue;
                 }
@@ -90,7 +91,7 @@ namespace Terrain.Services
                 {
                     var neightbourPosition = worldPosition + blockSide.ToVector();
 
-                    if (!World.TryGetBlock(neightbourPosition, out var blockType) && blockType == BlockType.Air)
+                    if (!WorldTerrain.TryGetBlock(neightbourPosition, out var blockType) && blockType == BlockType.Air)
                     {
                         meshBuilder.AppendQuad(blockSide, localPosition);
                     }
