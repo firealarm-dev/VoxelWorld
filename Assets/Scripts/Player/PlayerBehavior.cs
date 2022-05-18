@@ -7,25 +7,20 @@ namespace Player
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private float speed = 3;
         [SerializeField] private float sprintSpeed = 5;
-        [SerializeField] private float jumpForce = 100;
+        [SerializeField] private float jumpForce = 1000;
 
         private MovementSystem _movementSystem;
         private CameraSystem _cameraSystem;
+        private CapsuleCollider _collider;
 
         private void Awake()
         {
             _movementSystem = new MovementSystem(gameObject, speed, sprintSpeed, jumpForce);
             _cameraSystem = new CameraSystem(transform, _movementSystem, cameraTransform);
-        }
+            _collider = GetComponent<CapsuleCollider>();
 
-        private void OnTriggerEnter(Collider other)
-        {
-            _movementSystem.OnTouchGround();
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            _movementSystem.OnLeaveGround();
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         private void LateUpdate()
@@ -38,6 +33,17 @@ namespace Player
 
         private void FixedUpdate()
         {
+            if (Physics.Raycast(transform.position, Vector3.down, _collider.bounds.extents.y + 0.5f))
+            {
+                Debug.Log("Ground");
+                _movementSystem.OnTouchGround();
+            }
+            else
+            {
+                Debug.Log("Air");
+                _movementSystem.OnLeaveGround();
+            }
+            
             _movementSystem.InSprint = Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
 
             var h = Input.GetAxis("Horizontal");
