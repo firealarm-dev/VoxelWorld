@@ -85,6 +85,7 @@ namespace Terrain.Services
 
                 if (_chunkObjects.TryGetValue(chunk.Position, out var chunkObject))
                 {
+                    _chunkObjects.Remove(chunk.Position);
                     Destroy(chunkObject);
                 }
             }
