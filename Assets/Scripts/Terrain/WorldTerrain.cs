@@ -44,6 +44,11 @@ namespace Terrain
             return chunk!.TryGetBlock(chunkX, chunkY, chunkZ, out blockType);
         }
 
+        public bool Remove(Vector2Int position)
+        {
+            return _chunks.Remove(position);
+        }
+
         public Chunk this[Vector2Int position]
         {
             get => _chunks[position];

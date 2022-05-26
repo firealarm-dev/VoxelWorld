@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Terrain;
 using Terrain.Extensions;
 using Terrain.Game;
@@ -10,12 +13,19 @@ namespace Terrain.Services
 {
     internal class TerrainRenderer : MonoBehaviour
     {
-        [SerializeField] private byte sizeInChunks = 5;
+        [SerializeField] private int renderDistance = 3;
         [SerializeField] private bool randomSeed = true;
         [SerializeField] private Material material;
         [SerializeField] private NoiseOptions noiseOptions;
 
         private NoiseGenerator _noiseGenerator;
+        private GameObject[] _players;
+
+        private BlockSide[] _blockSides = (BlockSide[])Enum.GetValues(typeof(BlockSide));
+
+        private List<Chunk> _chunksToRender = new List<Chunk>();
+        private List<Chunk> _chunksToDestroy = new List<Chunk>();
+        private Dictionary<Vector2Int, ChunkObject> _chunkObjects = new Dictionary<Vector2Int, ChunkObject>();
 
         private static readonly WorldTerrain WorldTerrain = new WorldTerrain(16, 56);
 
@@ -27,26 +37,63 @@ namespace Terrain.Services
             }
 
             _noiseGenerator = new NoiseGenerator(noiseOptions);
+            _players = GameObject.FindGameObjectsWithTag("Player");
         }
 
-        private void Start()
+        private void Update()
         {
-            for (var x = 0; x < sizeInChunks; x++)
+            foreach (var player in _players)
             {
-                for (var z = 0; z < sizeInChunks; z++)
+                var position = player.transform.position;
+
+                var positionX = Mathf.FloorToInt(position.x / 16) * 16;
+                var positionZ = Mathf.FloorToInt(position.z / 16) * 16;
+
+                for (var x = positionX - 16 * renderDistance; x <= positionX + 16 * renderDistance; x += 16)
                 {
-                    var position = new Vector2Int(x * WorldTerrain.ChunkSize, z * WorldTerrain.ChunkSize);
-                    CreateChunk(position);
+                    for (var z = positionZ - 16 * renderDistance; z <= positionZ + 16 * renderDistance; z += 16)
+                    {
+                        var chunkPosition = new Vector2Int(x, z);
+
+                        if (!WorldTerrain.TryGetChunk(x, z, out _) && _chunksToRender.All(c => c.Position != chunkPosition))
+                        {
+                            var chunk = CreateChunk(chunkPosition);
+                            _chunksToRender.Add(chunk);
+                        }
+                    }
+                }
+
+                foreach (var chunk in WorldTerrain)
+                {
+                    if (Mathf.Abs(positionX - chunk.Position.x) > 16 * (renderDistance + 3) ||
+                        Mathf.Abs(positionZ - chunk.Position.y) > 16 * (renderDistance + 3))
+                    {
+                        _chunksToDestroy.Add(chunk);
+                    }
                 }
             }
 
-            foreach (var chunk in WorldTerrain)
+            foreach (var chunk in _chunksToRender)
             {
-                RenderChunk(chunk);
+                var chunkObject = RenderChunk(chunk);
+                _chunkObjects.Add(chunk.Position, chunkObject);
             }
+
+            foreach (var chunk in _chunksToDestroy)
+            {
+                WorldTerrain.Remove(chunk.Position);
+
+                if (_chunkObjects.TryGetValue(chunk.Position, out var chunkObject))
+                {
+                    Destroy(chunkObject);
+                }
+            }
+
+            _chunksToRender.Clear();
+            _chunksToDestroy.Clear();
         }
 
-        private void CreateChunk(Vector2Int position)
+        private Chunk CreateChunk(Vector2Int position)
         {
             var chunk = new Chunk(16, 56, position);
             WorldTerrain[position] = chunk;
@@ -64,14 +111,15 @@ namespace Terrain.Services
                     ? BlockType.Grass
                     : BlockType.Air;
             }
+
+            return chunk;
         }
 
-        private void RenderChunk(Chunk chunk)
+        private ChunkObject RenderChunk(Chunk chunk)
         {
             var chunkObject = new ChunkObject(chunk, transform, material);
-
             var meshBuilder = new VoxelMeshBuilder();
-            var blockSides = (BlockSide[])Enum.GetValues(typeof(BlockSide));
+            
             for (var i = 0; i < chunk.Size * chunk.Height * chunk.Size; i++)
             {
                 var x = i % chunk.Size;
@@ -87,7 +135,7 @@ namespace Terrain.Services
 
                 var localPosition = new Vector3Int(x, y, z);
 
-                foreach (var blockSide in blockSides)
+                foreach (var blockSide in _blockSides)
                 {
                     var neightbourPosition = worldPosition + blockSide.ToVector();
 
@@ -100,6 +148,8 @@ namespace Terrain.Services
 
             var mesh = meshBuilder.Build();
             chunkObject.Mesh.Render(mesh);
+
+            return chunkObject;
         }
     }
 }

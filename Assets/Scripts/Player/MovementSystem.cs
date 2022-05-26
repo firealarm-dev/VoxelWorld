@@ -32,7 +32,6 @@ namespace Player
             if (!InAir)
             {
                 _rigidbody.AddForce(Vector3.up * _jumpForce);
-                OnLeaveGround();
             }
         }
 

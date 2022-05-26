@@ -21,6 +21,11 @@ namespace Terrain.Game
 
         public ChunkMesh Mesh { get; }
 
+        public void SetActive(bool value)
+        {
+            _gameObject.SetActive(value);
+        }
+        
         public static implicit operator Chunk(ChunkObject chunkObject)
         {
             return chunkObject._chunk;

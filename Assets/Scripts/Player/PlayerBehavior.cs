@@ -33,7 +33,8 @@ namespace Player
 
         private void FixedUpdate()
         {
-            if (Physics.Raycast(transform.position, Vector3.down, _collider.bounds.extents.y + 0.5f))
+            // if (Physics.Raycast(transform.position, Vector3.down, _collider.bounds.extents.y + 0.5f))
+            if (Physics.SphereCast(new Ray(_collider.bounds.center, Vector3.down), _collider.radius, 0.9f))
             {
                 Debug.Log("Ground");
                 _movementSystem.OnTouchGround();
