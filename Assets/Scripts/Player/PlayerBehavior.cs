@@ -9,6 +9,7 @@ namespace Player
         [SerializeField] private float sprintSpeed = 5;
         [SerializeField] private float jumpForce = 1000;
 
+        private Animator _animation;
         private MovementSystem _movementSystem;
         private CameraSystem _cameraSystem;
         private CapsuleCollider _collider;
@@ -18,6 +19,8 @@ namespace Player
             _movementSystem = new MovementSystem(gameObject, speed, sprintSpeed, jumpForce);
             _cameraSystem = new CameraSystem(transform, _movementSystem, cameraTransform);
             _collider = GetComponent<CapsuleCollider>();
+            
+            _animation = GetComponent<Animator>();
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -27,6 +30,10 @@ namespace Player
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                _animation.SetBool("isJumping", true);
+                _animation.SetBool("isStanding", false);
+                _animation.SetBool("isWalking", false);
+                
                 _movementSystem.Jump();
             }
         }
@@ -38,6 +45,7 @@ namespace Player
             {
                 Debug.Log("Ground");
                 _movementSystem.OnTouchGround();
+                _animation.SetBool("isJumping", false);
             }
             else
             {
@@ -53,7 +61,15 @@ namespace Player
             //Move smb relative to the camera
             if (!(h == 0 && v == 0))
             {
+                _animation.SetBool("isWalking", true);
+                _animation.SetBool("isStanding", false);
                 _cameraSystem.MoveUnderCamera(h, v);
+                
+            }
+            else
+            {
+                _animation.SetBool("isWalking", false);
+                _animation.SetBool("isStanding", true);
             }
         }
     }

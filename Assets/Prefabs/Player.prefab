@@ -26,7 +26,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0027103424, y: 0.22063541, z: -0.01099968}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2151451706304383325}
   m_RootOrder: 3
@@ -61,7 +60,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 24.64, y: 56, z: 6.457}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2151451707400086341}
   - {fileID: 2151451706937371433}
@@ -159,7 +157,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2151451706584112050}
   m_RootOrder: 0
@@ -286,7 +283,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2151451707613976761}
   m_RootOrder: 0
@@ -411,7 +407,6 @@ Transform:
   m_LocalRotation: {x: 0.23284234, y: -0.000000018708567, z: 0.0000000044792614, w: 0.9725145}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2151451706432241068}
   m_Father: {fileID: 2151451707400086341}
@@ -488,7 +483,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2151451707377784005}
   m_RootOrder: 0
@@ -615,7 +609,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.017999649, z: 0.00031280518}
   m_LocalScale: {x: 0.4951649, y: 0.9597286, z: 0.4951649}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2151451706304383325}
   m_RootOrder: 1
@@ -639,7 +632,6 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -710,7 +702,6 @@ Transform:
   m_LocalRotation: {x: 0.25044686, y: 0.00000000832901, z: -0.0000000021546422, w: 0.96813035}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2151451706643696848}
   m_Father: {fileID: 2151451707400086341}
@@ -786,7 +777,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0027103424, y: 2.6318817, z: -4.009371}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2151451707613976761}
   - {fileID: 2151451707377784005}
@@ -952,7 +942,6 @@ Transform:
   m_LocalRotation: {x: 0.26801524, y: 3e-45, z: -1e-45, w: 0.96341467}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2151451706457820653}
   m_Father: {fileID: 2151451707400086341}
@@ -1028,7 +1017,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.35, z: 0.47}
   m_LocalScale: {x: 0.4951649, y: 0.4951649, z: 0.24893922}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2151451706304383325}
   m_RootOrder: 2
@@ -1052,7 +1040,6 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1112,7 +1099,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2151451706304383325}
   m_RootOrder: 4
@@ -1136,7 +1122,6 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
